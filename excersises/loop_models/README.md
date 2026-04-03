@@ -48,4 +48,5 @@ $$
 ---
 # Computational Models: LOOP Exercises
 
-
+> [!TIP]
+> **View the formatted document:** [![View PDF](https://img.shields.io/badge/PDF-View_Exercises-red?style=for-the-badge&logo=adobe-acrobat-reader)](./solutions.pdf)
