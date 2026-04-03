@@ -1,0 +1,140 @@
+\documentclass[11pt,a4paper]{article}
+
+% --- Language and Font Setup ---
+\usepackage[english,greek]{babel}
+\usepackage{fontspec}
+
+% Overleaf usually has 'Times New Roman' or 'FreeSerif'
+\setmainfont{FreeSerif} 
+
+% --- Math and Logic ---
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% --- LOOP Language Definition ---
+\lstdefinelanguage{LOOP}{
+    keywords={LOOP, DO, END, IF, THEN, ELSE, :=},
+    sensitive=true,
+    morecomment=[l]{//},
+    morestring=[b]"
+}
+
+\lstset{
+    language=LOOP,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    frame=single,
+    tabsize=2,
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+% --- Document Info ---
+\title{Computational Models: Encoding Excersises}
+\author{Vasilis Ioannou}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Encoding}
+
+Add Here what is encoding
+
+Cantor's Function is defined as:
+\[ C(m, n) = \frac{(m+n)(m+n+1)}{2} + n \]
+
+\subsection*{Formal Definition}
+A function $C: \mathbb{N} \times \mathbb{N} \to \mathbb{N}$ must satisfy the following $m, n, k \in \mathbb{N}$:
+\begin{itemize}
+    \item $D_1(C(m, n)) = m$ 
+    \item $D_2(C(m, n)) = n$ 
+    \item $C(D_1(k), D_2(k)) = k$ 
+\end{itemize}
+
+\pagebreak
+\section*{Excersise 1}
+
+\subsection*{ Cantor Function $\text{cantor}(x, y)$}a
+
+\begin{lstlisting}[language=LOOP]
+// Input: x, y
+// Result: res
+sum := add(x,y)
+sum_plus_one := sum + 1
+prod = mult(sum,sum+plus_one)
+tri = div(prod,2)
+res := add(tri,y)
+\end{lstlisting}
+
+\subsection*{ Decoding Function $\text{D1}(k)$}
+
+\begin{lstlisting}[language=LOOP]
+// D1 returns the 'm' value: m = w - n
+// Calculation of w = floor((sqrt(8k+1)-1)/2)
+eight_k_plus_1 := mult(8,k) + 1
+
+// Loop-based Integer SQRT
+root := sqrt(eight_k_plus_1)
+
+w := div(sub(root,1),2);
+n := D2(k); // Using the result from D2
+res := sub(w,n);
+\end{lstlisting}
+
+\subsection*{ Decoding Function $\text{D2}()$}
+
+\begin{lstlisting}[language=LOOP]
+// D2 returns the 'n' value: n = k - (w*(w+1)/2)
+eight_k_plus_1 := mult(8,k) + 1
+w := div(sub(root,1),2);
+
+// Triangular number t = (w*(w+1))/2
+w_plus_1 := w + 1;
+t := div(mult(w,w_plus_1),2)
+res := sub(k,t)
+\end{lstlisting}
+
+\pagebreak
+\section*{Excersise 2: Closed-Form Expressions}
+
+A \textbf{closed-form expression} is a mathematical expression that can be evaluated in a finite number of operations. It uses a standard set of well-defined functions (such as addition, multiplication, exponents, and logarithms) and avoids the use of recursion, limits, or infinite series.
+
+\section*{The Closed-Form of the Hyperoperation Function}
+
+The function $f(x, y, n)$ provided in the exercise is known as the \textbf{hyperoperation sequence}. While the image defines it recursively, its closed-form expression is typically represented using \textbf{Knuth's up-arrow notation} for $n \ge 3$.
+
+The complete closed-form representation is:
+
+\[
+f(x, y, n) = 
+\begin{cases} 
+y + 1 & \text{if } n = 0 \\
+x + y & \text{if } n = 1 \\
+x \cdot y & \text{if } n = 2 \\
+x \uparrow^{n-2} y & \text{if } n \ge 3 
+\end{cases}
+\]
+
+\subsection*{Notation Breakdown}
+\begin{itemize}
+    \item \textbf{n = 3 (Exponentiation):} $x \uparrow^{3-2} y = x \uparrow y = x^y$
+    \item \textbf{n = 4 (Tetration):} $x \uparrow^{4-2} y = x \uparrow\uparrow y = \underbrace{x^{x^{\cdot^{\cdot^x}}}}_{y \text{ times}}$
+    \item \textbf{n = 5 (Pentation):} $x \uparrow^{5-2} y = x \uparrow\uparrow\uparrow y$
+\end{itemize}
+
+\subsection*{Excersise 3}
+
+The set of functions computable by the LOOP language is exactly the set of Primitive Recursive Functions (PR). 
+The subset of Pascal you described is simply a high-level syntax for PR.
+
+LOOP modeling requires bounded Loops. While,Repeat and Goto modeling can have unbounded loops.
+The allowed operators (+, -, *, div, mod) and logical structures (if, case) are all Primitive Recursive.
+This means they can be built starting from three basic functions (See Loop Excersises)
+We excluse functions and Procesures because they can allow recursion which can be unbounded.
+
+\end{document}
