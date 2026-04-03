@@ -5,7 +5,7 @@
 
 ---
 
-## 📌 Project Overview
+## 📌 Repo Overview
 This repo explores the theoretical foundations of computation, focusing on:
 1. **Cantor's Pairing Function:** Implementing encoding and decoding mechanisms using the **LOOP** language.
 2. **Hyperoperation Sequences:** Transitioning from recursive definitions to closed-form expressions using Knuth's up-arrow notation.
@@ -28,4 +28,4 @@ To be a valid encoding, it must satisfy:
 
 # Computational Models: LOOP Exercises
 > [!TIP]
-> **View the formatted document:** [![View PDF](https://img.shields.io/badge/PDF-View_Exercises-red?style=for-the-badge&logo=adobe-acrobat-reader)](./encoding.pdf)
+> **View the formatted document:** [![View PDF](https://img.shields.io/badge/PDF-View_Exercises-red?style=for-the-badge&logo=adobe-acrobat-reader)](./solutions.pdf)
