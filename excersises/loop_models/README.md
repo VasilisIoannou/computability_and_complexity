@@ -46,17 +46,6 @@ A(m-1, A(m, n-1)) & \text{if } m > 0 \text{ and } n > 0
 $$
 
 ---
+# Computational Models: LOOP Exercises
 
-##  Compilation Instructions
 
-The source file is written in **XeLaTeX** to support multilingual text (Greek and English) and high-quality math typesetting.
-
-### Requirements
-* A LaTeX distribution (TeX Live, MiKTeX, or MacTeX).
-* The `FreeSerif` font (standard in many Linux distros or available via Overleaf).
-* Required Packages: `amsmath`, `listings`, `xcolor`, `fontspec`, `babel`.
-
-### To Compile
-Run the following command in your terminal:
-```bash
-xelatex main.tex
