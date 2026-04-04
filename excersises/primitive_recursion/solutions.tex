@@ -1,0 +1,116 @@
+\documentclass{article}
+
+% --- Language and Font Setup ---
+\usepackage[english,greek]{babel}
+\usepackage{fontspec}
+
+% Standard font for Overleaf/XeLaTeX
+\setmainfont{FreeSerif} 
+
+% --- Math and Logic ---
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{listings}
+\usepackage{xcolor}
+
+% --- LOOP Language Definition ---
+\lstdefinelanguage{LOOP}{
+    keywords={LOOP, DO, END, IF, THEN, ELSE, :=},
+    sensitive=true,
+    morecomment=[l]{//},
+    morestring=[b]"
+}
+
+\lstset{
+    language=LOOP,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{gray}\itshape,
+    frame=single,
+    tabsize=2,
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny\color{gray}
+}
+
+% --- Document Info ---
+\title{Computational Models: Encoding Exercises}
+\author{Vasilis Ioannou}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section*{Primitive Recursion}
+
+\subsection*{Definition}
+
+The class $\mathcal{PR}$ of \textbf{primitive recursive functions} is defined as the smallest class of functions $f: \mathbb{N}^k \to \mathbb{N}$ that satisfies the following conditions:
+
+\subsection*{1. Initial (Basic) Functions}
+\begin{itemize}
+    \item \textbf{The Zero Function:} $Z(x) = 0$.
+    \item \textbf{The Successor Function:} $S(x) = x + 1$.
+    \item \textbf{The Predecessor Function:} $P(x + 1) = x$ with $P(0)=0$.
+    \item \textbf{The Projection Functions:} $U_i^n(x_1, \dots, x_n) = x_i$.
+\end{itemize}
+
+\subsection*{2. Closure under Operations}
+\subsubsection*{A. Composition}
+$h(\mathbf{x}) = f(g_1(\mathbf{x}), \dots, g_m(\mathbf{x}))$.
+\subsubsection*{B. Primitive Recursion}
+$f(\mathbf{x}, 0) = g(\mathbf{x})$ and $f(\mathbf{x}, y+1) = h(\mathbf{x}, y, f(\mathbf{x}, y))$.
+
+\pagebreak
+\section*{Exercise 1}
+
+\subsection*{Proposition: The function $\text{add}(x,y)$ is primitive recursive.} 
+
+\begin{proof}
+\paragraph{1. The Base Case ($y=0$):}
+$g(x) = U_1^1(x) = x$. Thus, $\text{add}(x,0) = x$.
+
+\paragraph{2. The Inductive Step ($y \to y+1$):}
+$h(x, y, z) = S(U_3^3(x, y, z)) = z + 1$.
+Thus, $\text{add}(x, y+1) = \text{add}(x, y) + 1$.
+
+\paragraph{3. Conclusion:}
+Since $g$ and $h$ are built from basic functions, $\text{add}(x,y)$ is primitive recursive.
+\end{proof}
+
+\subsection*{Proposition: The function $\text{mult}(x,y)$ is primitive recursive.} 
+
+\begin{proof}
+\paragraph{1. The Base Case ($y=0$):}
+$g(x) = Z(x) = 0$. Thus, $\text{mult}(x,0) = 0$.
+
+\paragraph{2. The Inductive Step ($y \to y+1$):}
+We use the previously defined addition function:
+$h(x, y, z) = \text{add}(U_3^3(x, y, z), U_1^3(x, y, z)) = z + x$.
+Thus, $\text{mult}(x, y+1) = \text{mult}(x, y) + x$.
+
+\paragraph{3. Conclusion:}
+As a composition of primitive recursive functions ($\text{add}$ and projections), $\text{mult}(x,y)$ is primitive recursive.
+\end{proof}
+
+\subsection*{Proposition: The function $\text{div}(x,y)$ is primitive recursive.}
+
+\begin{proof}
+\paragraph{1. Helper Functions:}
+We utilize the following functions:
+\begin{itemize}
+    \item \textbf{Proper Subtraction:} $x \dot{-} y$.
+    \item \textbf{Cosignum:} $\overline{\text{sg}}(x)$, which is $1$ if $x=0$ and $0$ otherwise.
+\end{itemize}
+
+\paragraph{2. Construction via Bounded Sum:}
+The value of $\text{div}(x, y)$ counts how many $i \in \{1, \dots, x\}$ satisfy $i \cdot y \leq x$:
+\[
+\text{div}(x, y) = \sum_{i=1}^{x} \overline{\text{sg}}((i \cdot y) \dot{-} x)
+\]
+
+\paragraph{3. Formal Verification:}
+The product, proper subtraction, and cosignum are all primitive recursive. Since the class $\mathcal{PR}$ is closed under \textbf{Bounded Summation}, $\text{div}(x, y)$ is primitive recursive.
+\end{proof}
+
+\end{document}
