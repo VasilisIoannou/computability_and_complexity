@@ -1,7 +1,7 @@
 \documentclass{article}
 
 % --- Language and Font Setup ---
-\usepackage[english,greek]{babel}
+\usepackage[english]{babel}
 \usepackage{fontspec}
 
 % Standard font for Overleaf/XeLaTeX
@@ -66,7 +66,6 @@ $f(\mathbf{x}, 0) = g(\mathbf{x})$ and $f(\mathbf{x}, y+1) = h(\mathbf{x}, y, f(
 
 \subsection*{Proposition: The function $\text{add}(x,y)$ is primitive recursive.} 
 
-\begin{proof}
 \paragraph{1. The Base Case ($y=0$):}
 $g(x) = U_1^1(x) = x$. Thus, $\text{add}(x,0) = x$.
 
@@ -76,30 +75,26 @@ Thus, $\text{add}(x, y+1) = \text{add}(x, y) + 1$.
 
 \paragraph{3. Conclusion:}
 Since $g$ and $h$ are built from basic functions, $\text{add}(x,y)$ is primitive recursive.
-\end{proof}
 
 \subsection*{Proposition: The function $\text{mult}(x,y)$ is primitive recursive.} 
 
-\begin{proof}
 \paragraph{1. The Base Case ($y=0$):}
 $g(x) = Z(x) = 0$. Thus, $\text{mult}(x,0) = 0$.
 
-\paragraph{2. The Inductive Step ($y \to y+1$):}
+\paragraph{2. The Inductive Step ($y\to y+1$):}
 We use the previously defined addition function:
 $h(x, y, z) = \text{add}(U_3^3(x, y, z), U_1^3(x, y, z)) = z + x$.
 Thus, $\text{mult}(x, y+1) = \text{mult}(x, y) + x$.
 
 \paragraph{3. Conclusion:}
 As a composition of primitive recursive functions ($\text{add}$ and projections), $\text{mult}(x,y)$ is primitive recursive.
-\end{proof}
 
 \subsection*{Proposition: The function $\text{div}(x,y)$ is primitive recursive.}
 
-\begin{proof}
 \paragraph{1. Helper Functions:}
 We utilize the following functions:
 \begin{itemize}
-    \item \textbf{Proper Subtraction:} $x \dot{-} y$.
+    \item \textbf{Proper Subtraction:$x\dot{-}y$.}
     \item \textbf{Cosignum:} $\overline{\text{sg}}(x)$, which is $1$ if $x=0$ and $0$ otherwise.
 \end{itemize}
 
@@ -111,6 +106,60 @@ The value of $\text{div}(x, y)$ counts how many $i \in \{1, \dots, x\}$ satisfy 
 
 \paragraph{3. Formal Verification:}
 The product, proper subtraction, and cosignum are all primitive recursive. Since the class $\mathcal{PR}$ is closed under \textbf{Bounded Summation}, $\text{div}(x, y)$ is primitive recursive.
-\end{proof}
+
+\section*{Excersise 3}
+
+\subsection{Problem Definition}
+Let $\mathcal{P}$ be the set of primitive recursive functions. Show that if $g(x, y) \in \mathcal{P}$, then the function $f(x, z)$ defined by the bounded sum:
+\[
+f(x, z) = \sum_{y=0}^{z} g(x, y)
+\]
+is also in $\mathcal{P}$.
+
+\section*{Proof}
+
+To prove that $f \in \mathcal{P}$, we must show that it can be defined using the basic primitive recursive functions and the operations of composition and primitive recursion.
+
+\subsection*{1. Defining the Recursion}
+We define $f(x, z)$ by induction on $z$:
+
+\begin{itemize}
+    \item \textbf{Base Case ($z=0$):}
+    \[
+    f(x, 0) = \sum_{y=0}^{0} g(x, y) = g(x, 0)
+    \]
+    
+    \item \textbf{Recursive Step ($z+1$):}
+    \begin{align*}
+    f(x, z+1) &= \sum_{y=0}^{z+1} g(x, y) \\
+    &= \left( \sum_{y=0}^{z} g(x, y) \right) + g(x, z+1) \\
+    &= f(x, z) + g(x, z+1)
+    \end{align*}
+\end{itemize}
+
+\subsection*{2. Mapping to the Primitive Recursion Schema}
+The standard schema for primitive recursion for a function of $n+1$ variables is:
+\begin{enumerate}
+    \item $f(\vec{x}, 0) = h_1(\vec{x})$
+    \item $f(\vec{x}, z+1) = h_2(\vec{x}, z, f(\vec{x}, z))$
+\end{enumerate}
+
+In our specific case, the parameters are:
+\begin{itemize}
+    \item \textbf{$h_1(x) = g(x, 0)$}: Since $g$ is primitive recursive and $0$ is a constant function, $h_1$ is PR by composition.
+    \item \textbf{$h_2(x, z, w) = w + g(x, z+1)$}:
+    \begin{itemize}
+        \item The addition function $+$ is known to be PR.
+        \item $w$ is the projection $P_3^3(x, z, w)$, which is a basic PR function.
+        \item $g(x, z+1)$ is the composition of $g$ with the successor function $S(z)$.
+    \end{itemize}
+\end{itemize}
+
+\subsection*{Conclusion}
+Since $h_1$ and $h_2$ are both primitive recursive, and $f$ is defined via the primitive recursion schema from $h_1$ and $h_2$, it follows that $f \in \mathcal{P}$. Thus, the set of primitive recursive functions is closed under bounded summation.
+
+\qed
+
+
 
 \end{document}
